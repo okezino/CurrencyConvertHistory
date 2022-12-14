@@ -1,5 +1,6 @@
 package com.example.currencyconverter.di
 
+import com.example.currencyconverter.common.NetworkUtil.API_KEY
 import com.example.currencyconverter.common.NetworkUtil.BASE_URL
 import com.example.currencyconverter.data.network.service.CurrencyConverterService
 import dagger.Module
@@ -17,15 +18,16 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
-    @Provides
-    @Singleton
-    fun provideHeaderInterceptor(): Interceptor {
-        return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-    }
+//    @Provides
+//    @Singleton
+//    fun provideHeaderInterceptor(): Interceptor {
+//        return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+//    }
 
     @Provides
     @Singleton
     fun provideCurrencyConverterApiService(interceptor: Interceptor): CurrencyConverterService{
+        val logging = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client( OkHttpClient.Builder()
@@ -33,6 +35,16 @@ class AppModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(CurrencyConverterService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideHeaderInterceptor(): Interceptor {
+        return Interceptor { chain ->
+            val request = chain.request().newBuilder()
+            request.addHeader("apikey", API_KEY)
+            chain.proceed(request.build())
+        }
     }
 
 }

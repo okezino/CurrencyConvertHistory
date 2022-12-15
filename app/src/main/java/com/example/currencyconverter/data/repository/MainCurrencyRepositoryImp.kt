@@ -1,5 +1,7 @@
 package com.example.currencyconverter.data.repository
 
+import com.example.currencyconverter.common.NetworkUtil.API_KEY
+import com.example.currencyconverter.common.NetworkUtil.NETWORK_CALL_ERROR
 import com.example.currencyconverter.common.Resource
 import com.example.currencyconverter.data.model.CurrencyConversionResponse
 import com.example.currencyconverter.data.model.SymbolResult
@@ -28,7 +30,7 @@ class MainCurrencyRepositoryImp @Inject constructor(private val currencyConverte
             Resource.Success(response)
 
         } catch (e: Exception) {
-            Resource.Error(e.localizedMessage ?: "Som")
+            Resource.Error(e.localizedMessage ?: NETWORK_CALL_ERROR )
         }
     }
 

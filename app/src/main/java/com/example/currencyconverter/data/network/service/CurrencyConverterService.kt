@@ -1,6 +1,5 @@
 package com.example.currencyconverter.data.network.service
 
-import com.example.currencyconverter.common.NetworkUtil.API_KEY
 import com.example.currencyconverter.data.model.CurrencyConversionResponse
 import com.example.currencyconverter.data.model.HistoryResponse
 import com.example.currencyconverter.data.model.SymbolResponse

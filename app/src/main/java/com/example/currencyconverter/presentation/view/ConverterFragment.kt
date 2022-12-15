@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.currencyconverter.R
 import com.example.currencyconverter.common.Resource
@@ -24,15 +25,6 @@ class ConverterFragment : Fragment() {
     private var _binding: FragmentConverterBinding? = null
     private val binding get() = _binding!!
     private val mainCurrencyViewModel : MainCurrencyViewModel by activityViewModels()
-    val listOfCurrency = listOf(  "AED" ,
-        "AFN",
-        "ALL",
-        "AMD",
-        "EGP",
-        "EUR",
-        "JPY",
-        "USD")
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

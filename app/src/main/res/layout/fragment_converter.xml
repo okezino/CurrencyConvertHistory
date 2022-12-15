@@ -61,35 +61,35 @@
         android:id="@+id/from_currency_input"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="68dp"
         android:layout_weight="1"
         android:imeOptions="actionDone"
         android:inputType="numberDecimal"
         android:paddingVertical="12dp"
+        android:textColor="@color/black"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:textAlignment="textStart"
-        android:textSize="11sp"
+        android:textSize="20sp"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/from_currency_layout" />
 
-    <EditText
+    <TextView
         android:id="@+id/to_currency_value"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="92dp"
         android:layout_weight="1"
-        android:clickable="false"
-        android:imeOptions="actionDone"
-        android:inputType="numberDecimal"
+        android:background="@color/purple_500"
+        android:gravity="center"
         android:paddingVertical="12dp"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
-        android:textAlignment="textStart"
-        android:textSize="11sp"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toCountryLayout" />
 
@@ -139,6 +139,19 @@
         app:layout_constraintTop_toBottomOf="@+id/from_currency_input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/retry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click here  to Retry fetching currency "
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currency_detail_btn"
+        app:layout_constraintVertical_bias="0.11" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

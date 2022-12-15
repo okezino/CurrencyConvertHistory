@@ -81,6 +81,7 @@ class ConverterFragment : Fragment() {
 
                 is Resource.Error -> {
                     binding.progressBar.visibility = View.INVISIBLE
+                    binding.retry.visibility = View.VISIBLE
                     binding.progressBar.showSnackBar("${resource.messages}")
                 }
 
@@ -153,7 +154,7 @@ class ConverterFragment : Fragment() {
 
     }
 
-    fun activateClickListener(){
+    private fun activateClickListener(){
         binding.currencyDetailBtn.setOnClickListener {
             val fromCurrency = binding.fromCurrencyDropdown.text.toString()
             val toCurrency = binding.toCurrencyDropDown.text.toString()
@@ -164,6 +165,11 @@ class ConverterFragment : Fragment() {
                 findNavController().navigate(action)
 
             }
+        }
+
+        binding.retry.setOnClickListener {
+            mainCurrencyViewModel.getCurrencySymbols()
+            binding.retry.visibility = View.GONE
         }
     }
 

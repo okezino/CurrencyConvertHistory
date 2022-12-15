@@ -7,15 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import com.example.currencyconverter.R
 import com.example.currencyconverter.common.DateUtil
 import com.example.currencyconverter.common.Resource
 import com.example.currencyconverter.common.UiHelper.showSnackBar
 import com.example.currencyconverter.data.model.Days
-import com.example.currencyconverter.data.model.HistoryResponse
-import com.example.currencyconverter.databinding.FragmentConverterBinding
 import com.example.currencyconverter.databinding.FragmentHistoryBinding
 import com.example.currencyconverter.presentation.model.ConversionRate
 import com.example.currencyconverter.presentation.model.HistoryInfo
@@ -25,12 +21,15 @@ import com.example.currencyconverter.presentation.viewmodel.MainCurrencyViewMode
 class HistoryFragment : Fragment() {
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
-    lateinit var rateInfo : ConversionRate
-    private val mainCurrencyViewModel : MainCurrencyViewModel by activityViewModels()
-    private var day = 1
-    private val listHistory = ArrayList<HistoryResponse>()
+    lateinit var rateInfo: ConversionRate
+    private val mainCurrencyViewModel: MainCurrencyViewModel by activityViewModels()
 
-    val args : HistoryFragmentArgs by navArgs()
+    private var yes = ""
+    private var twoDays = ""
+    private var threedays = ""
+
+
+    val args: HistoryFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +46,9 @@ class HistoryFragment : Fragment() {
         rateInfo = args.rateInfo
 
         DateUtil.getDayForPastThreeDays { yesterday, twoDaysAgo, threeDaysAgo ->
+            yes = yesterday
+            twoDays = twoDaysAgo
+            threedays = threeDaysAgo
             binding.aDayAgoDate.text = yesterday
             binding.twoDayAgoDate.text = twoDaysAgo
             binding.threeDayAgoDate.text = threeDaysAgo
@@ -71,7 +73,7 @@ class HistoryFragment : Fragment() {
                 }
 
                 is Resource.Error -> {
-                    binding.loading.visibility  = View.INVISIBLE
+                    binding.loading.visibility = View.INVISIBLE
                     binding.aDayAgoDate.showSnackBar("${resource.messages}")
                 }
 
@@ -79,14 +81,35 @@ class HistoryFragment : Fragment() {
                     binding.loading.visibility
                     val data = resource.data
                     data?.let {
-                        println(it)
+                        it.forEach { res ->
+                            when (res.date) {
+                                yes -> {
+                                    binding.aDayAgoFromCurrency.text = ""
+                                    binding.aDayAgoToCurrency.text = ""
+
+                                }
+
+                                twoDays -> {
+                                    binding.twoDayAgoFromCurrency.text = ""
+                                    binding.twoDayAgoToCurrency.text = ""
+
+                                }
+                                threedays -> {
+                                    binding.threeDayAgoFromCurrency.text = ""
+                                    binding.threeDayAgoToCurrency.text = ""
+
+                                }
+                            }
+                        }
+
                     }
-
                 }
-            }
-        }
-    }
 
+            }
+
+        }
+
+    }
 
     private fun populateView() {
 
@@ -102,6 +125,3 @@ class HistoryFragment : Fragment() {
         }
     }
 }
-
-
-

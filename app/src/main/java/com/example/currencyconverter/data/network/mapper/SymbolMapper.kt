@@ -1,6 +1,5 @@
 package com.example.currencyconverter.data.network.mapper
 
-import com.example.currencyconverter.data.model.SymbolResponse
 import com.example.currencyconverter.data.model.Symbols
 
 fun Symbols.toListOfCurrencySymbol(): Map<String, String> {

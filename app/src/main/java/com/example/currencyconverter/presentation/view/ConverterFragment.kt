@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.currencyconverter.R
 import com.example.currencyconverter.common.Resource
 import com.example.currencyconverter.common.UiHelper
@@ -48,10 +49,14 @@ class ConverterFragment : Fragment() {
         mainCurrencyViewModel.getCurrencySymbols()
         observeGetSymbols()
         activateTextWatcher()
+        activateClickListener()
     }
 
 
     private fun observeGetSymbols(){
+        val arrayAdapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.select_dialog_item_material,listOfCurrency)
+        binding.fromCurrencyDropdown.setAdapter(arrayAdapter)
+        binding.toCurrencyDropDown.setAdapter(arrayAdapter)
 
         mainCurrencyViewModel.currencySymbols.observe(viewLifecycleOwner){ resource ->
 
@@ -69,9 +74,9 @@ class ConverterFragment : Fragment() {
                     binding.progressBar.visibility = View.INVISIBLE
                     val response = resource.data?.symbols
                     println(response)
-                    val arrayAdapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.select_dialog_item_material, response!!)
-                    binding.fromCurrencyDropdown.setAdapter(arrayAdapter)
-                    binding.toCurrencyDropDown.setAdapter(arrayAdapter)
+//                    val arrayAdapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.select_dialog_item_material, response!!)
+//                    binding.fromCurrencyDropdown.setAdapter(arrayAdapter)
+//                    binding.toCurrencyDropDown.setAdapter(arrayAdapter)
                 }
             }
 
@@ -100,7 +105,7 @@ class ConverterFragment : Fragment() {
         }
     }
 
-    fun activateTextWatcher(){
+    private fun activateTextWatcher(){
         binding.fromCurrencyInput.addTextChangedListener(getCurrencyValueChange)
         binding.fromCurrencyDropdown.addTextChangedListener(onFromCurrencySelected)
         binding.toCurrencyDropDown.addTextChangedListener(onToCurrencySelected)
@@ -135,7 +140,7 @@ class ConverterFragment : Fragment() {
             val toCurrency = binding.toCurrencyDropDown.text.toString()
             val amount = binding.fromCurrencyInput.text.toString()
             if (amount.isNotBlank() && toCurrency.isNotBlank()){
-                mainCurrencyViewModel.getCurrencyConverted(ConversionRate(p0.toString(),p0.toString(),toCurrency))
+                mainCurrencyViewModel.getCurrencyConverted(ConversionRate(amount,p0.toString(),toCurrency))
             }
         }
 
@@ -151,12 +156,26 @@ class ConverterFragment : Fragment() {
             val fromCurrency = binding.fromCurrencyDropdown.text.toString()
             val amount = binding.fromCurrencyInput.text.toString()
             if (amount.isNotBlank() && fromCurrency.isNotBlank()){
-                mainCurrencyViewModel.getCurrencyConverted(ConversionRate(p0.toString(),fromCurrency,p0.toString()))
+                mainCurrencyViewModel.getCurrencyConverted(ConversionRate(amount,fromCurrency,p0.toString()))
             }
         }
         override fun afterTextChanged(p0: Editable?) {
         }
 
+    }
+
+    fun activateClickListener(){
+        binding.currencyDetailBtn.setOnClickListener {
+            val fromCurrency = binding.fromCurrencyDropdown.text.toString()
+            val toCurrency = binding.toCurrencyDropDown.text.toString()
+            val amount = binding.fromCurrencyInput.text.toString()
+            if (amount.isNotBlank() && fromCurrency.isNotBlank() && toCurrency.isNotBlank()){
+                val rateInfo = ConversionRate(amount,fromCurrency,toCurrency)
+                val action = ConverterFragmentDirections.actionConverterFragmentToHistoryFragment(rateInfo)
+                findNavController().navigate(action)
+
+            }
+        }
     }
 
 

@@ -6,11 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.currencyconverter.common.Resource
 import com.example.currencyconverter.data.model.CurrencyConversionResponse
+import com.example.currencyconverter.data.model.HistoryResponse
 import com.example.currencyconverter.data.model.SymbolResult
 import com.example.currencyconverter.domain.usecase.GetCurrencyConversionRateUseCase
 import com.example.currencyconverter.domain.usecase.GetCurrencyHistoryUseCase
 import com.example.currencyconverter.domain.usecase.GetCurrencySymbolsUseCase
 import com.example.currencyconverter.presentation.model.ConversionRate
+import com.example.currencyconverter.presentation.model.HistoryInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,6 +32,9 @@ class MainCurrencyViewModel @Inject constructor(
     private var _currencyConverted = MutableLiveData<Resource<CurrencyConversionResponse>>()
     val currencyConverted: LiveData<Resource<CurrencyConversionResponse>> get() = _currencyConverted
 
+    private var _currencyHistory = MutableLiveData<Resource<HistoryResponse>>()
+    val currencyHistory: LiveData<Resource<HistoryResponse>> get() = _currencyHistory
+
 
     fun getCurrencySymbols() {
         _currencySymbols .value = Resource.Loading()
@@ -44,6 +49,13 @@ class MainCurrencyViewModel @Inject constructor(
         _currencyConverted.value = Resource.Loading()
         viewModelScope.launch(Dispatchers.IO) {
             _currencyConverted.postValue(getCurrencyConversionRateUseCase.execute(conversionRate).data)
+        }
+    }
+
+    fun getCurrencyHistory(historyInfo: HistoryInfo){
+        _currencyHistory.value = Resource.Loading()
+        viewModelScope.launch(Dispatchers.IO) {
+            _currencyHistory.postValue(getCurrencyHistoryUseCase.execute(historyInfo).data)
         }
     }
 

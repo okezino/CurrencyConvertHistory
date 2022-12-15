@@ -32,8 +32,13 @@ class MainCurrencyRepositoryImp @Inject constructor(private val currencyConverte
         }
     }
 
-    override suspend fun getCurrencyHistory(base: String, symbols: String) {
-        TODO("Not yet implemented")
+    override suspend fun getCurrencyHistory(date : String , base: String, symbols: String) = executeRequest {
+        try {
+            val response = currencyConverterService.getConvertedHistory(date, base, symbols)
+            Resource.Success(response)
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage ?: "Som")
+        }
     }
 
 

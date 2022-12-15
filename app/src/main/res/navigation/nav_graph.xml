@@ -18,5 +18,9 @@
         android:id="@+id/historyFragment"
         android:name="com.example.currencyconverter.presentation.view.HistoryFragment"
         android:label="fragment_history"
-        tools:layout="@layout/fragment_history" />
+        tools:layout="@layout/fragment_history" >
+        <argument
+            android:name="rateInfo"
+            app:argType="com.example.currencyconverter.presentation.model.ConversionRate" />
+    </fragment>
 </navigation>

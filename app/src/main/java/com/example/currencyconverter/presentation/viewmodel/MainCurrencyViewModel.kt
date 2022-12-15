@@ -15,6 +15,7 @@ import com.example.currencyconverter.presentation.model.ConversionRate
 import com.example.currencyconverter.presentation.model.HistoryInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -54,7 +55,33 @@ class MainCurrencyViewModel @Inject constructor(
 
     fun getCurrencyHistory(historyInfo: HistoryInfo){
         _currencyHistory.value = Resource.Loading()
+
         viewModelScope.launch(Dispatchers.IO) {
+            val listOfHistory =  mutableListOf<HistoryResponse>()
+
+            val aDayHistory = async {
+                getCurrencyHistoryUseCase.execute(historyInfo).data
+            }
+
+            val twoDaysHistory = async {
+                getCurrencyHistoryUseCase.execute(historyInfo).data
+            }
+
+            val threeDaysHistory = async {
+                getCurrencyHistoryUseCase.execute(historyInfo).data
+            }
+            if(aDayHistory is Resource.Success<*>){
+                listOfHistory.add(aDayHistory.await().data!!)
+            }
+
+            if(twoDaysHistory is Resource.Success<*>){
+                listOfHistory.add(twoDaysHistory.await().data!!)
+            }
+
+            if(threeDaysHistory is Resource.Success<*>){
+                listOfHistory.add(threeDaysHistory.await().data!!)
+            }
+
             _currencyHistory.postValue(getCurrencyHistoryUseCase.execute(historyInfo).data)
         }
     }

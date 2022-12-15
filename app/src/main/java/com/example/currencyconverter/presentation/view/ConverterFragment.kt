@@ -54,9 +54,6 @@ class ConverterFragment : Fragment() {
 
 
     private fun observeGetSymbols(){
-        val arrayAdapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.select_dialog_item_material,listOfCurrency)
-        binding.fromCurrencyDropdown.setAdapter(arrayAdapter)
-        binding.toCurrencyDropDown.setAdapter(arrayAdapter)
 
         mainCurrencyViewModel.currencySymbols.observe(viewLifecycleOwner){ resource ->
 
@@ -74,9 +71,9 @@ class ConverterFragment : Fragment() {
                     binding.progressBar.visibility = View.INVISIBLE
                     val response = resource.data?.symbols
                     println(response)
-//                    val arrayAdapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.select_dialog_item_material, response!!)
-//                    binding.fromCurrencyDropdown.setAdapter(arrayAdapter)
-//                    binding.toCurrencyDropDown.setAdapter(arrayAdapter)
+                    val arrayAdapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.select_dialog_item_material, response!!)
+                    binding.fromCurrencyDropdown.setAdapter(arrayAdapter)
+                    binding.toCurrencyDropDown.setAdapter(arrayAdapter)
                 }
             }
 
@@ -97,7 +94,7 @@ class ConverterFragment : Fragment() {
 
                 is Resource.Success -> {
                     binding.progressBar.visibility = View.INVISIBLE
-                    val response = resource.data?.info?.rate
+                    val response = resource.data?.result
                     binding.toCurrencyValue.setText(response.toString())
                 }
             }

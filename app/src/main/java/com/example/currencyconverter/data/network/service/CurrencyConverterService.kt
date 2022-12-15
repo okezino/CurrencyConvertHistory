@@ -12,7 +12,6 @@ interface CurrencyConverterService {
 
     @GET("symbols")
     suspend fun getCurrencySymbols(
-        @Query("access_key") apikey : String = API_KEY
     ): SymbolResponse
 
     @GET("convert")

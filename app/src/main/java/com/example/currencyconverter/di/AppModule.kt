@@ -20,11 +20,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
-//    @Provides
-//    @Singleton
-//    fun provideHeaderInterceptor(): Interceptor {
-//        return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-//    }
 
     @Provides
     @Singleton
@@ -45,7 +40,7 @@ class AppModule {
     fun provideHeaderInterceptor(): Interceptor {
         return Interceptor { chain ->
             val request = chain.request().newBuilder()
-            request.addHeader("access_key", API_KEY)
+            request.addHeader("apikey", API_KEY)
             chain.proceed(request.build())
         }
     }

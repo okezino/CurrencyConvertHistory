@@ -47,6 +47,7 @@ class ConverterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         mainCurrencyViewModel.getCurrencySymbols()
         observeGetSymbols()
+        activateTextWatcher()
     }
 
 
@@ -75,13 +76,38 @@ class ConverterFragment : Fragment() {
             }
 
         }
+
+        mainCurrencyViewModel.currencyConverted.observe(viewLifecycleOwner){
+            resource ->
+
+            when(resource){
+                is Resource.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+
+                is Resource.Error -> {
+                    binding.progressBar.visibility = View.INVISIBLE
+                    binding.progressBar.showSnackBar("${resource.messages}")
+                }
+
+                is Resource.Success -> {
+                    binding.progressBar.visibility = View.INVISIBLE
+                    val response = resource.data?.info?.rate
+                    binding.toCurrencyValue.setText(response.toString())
+                }
+            }
+
+        }
     }
 
     fun activateTextWatcher(){
         binding.fromCurrencyInput.addTextChangedListener(getCurrencyValueChange)
+        binding.fromCurrencyDropdown.addTextChangedListener(onFromCurrencySelected)
+        binding.toCurrencyDropDown.addTextChangedListener(onToCurrencySelected)
+
     }
 
-    val getCurrencyValueChange = object : TextWatcher {
+    private val getCurrencyValueChange = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         }
 
@@ -96,6 +122,38 @@ class ConverterFragment : Fragment() {
 
         }
 
+        override fun afterTextChanged(p0: Editable?) {
+        }
+
+    }
+
+    private val onFromCurrencySelected = object : TextWatcher{
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        }
+
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            val toCurrency = binding.toCurrencyDropDown.text.toString()
+            val amount = binding.fromCurrencyInput.text.toString()
+            if (amount.isNotBlank() && toCurrency.isNotBlank()){
+                mainCurrencyViewModel.getCurrencyConverted(ConversionRate(p0.toString(),p0.toString(),toCurrency))
+            }
+        }
+
+        override fun afterTextChanged(p0: Editable?) {
+        }
+
+    }
+
+    private val onToCurrencySelected = object : TextWatcher{
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        }
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            val fromCurrency = binding.fromCurrencyDropdown.text.toString()
+            val amount = binding.fromCurrencyInput.text.toString()
+            if (amount.isNotBlank() && fromCurrency.isNotBlank()){
+                mainCurrencyViewModel.getCurrencyConverted(ConversionRate(p0.toString(),fromCurrency,p0.toString()))
+            }
+        }
         override fun afterTextChanged(p0: Editable?) {
         }
 

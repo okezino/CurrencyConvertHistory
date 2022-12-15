@@ -3,13 +3,14 @@ package com.example.currencyconverter.domain.repository
 import com.example.currencyconverter.common.Resource
 import com.example.currencyconverter.data.model.CurrencyConversionResponse
 import com.example.currencyconverter.data.model.SymbolResponse
+import com.example.currencyconverter.data.model.SymbolResult
 import com.example.currencyconverter.presentation.model.ConversionRate
 
 interface MainCurrencyRepository {
 
-    fun getCurrencySymbols() : Resource<SymbolResponse>
+   suspend fun  getCurrencySymbols() : Resource<SymbolResult>
 
-    fun getCurrencyConversionRate(conversionRate: ConversionRate) : Resource<CurrencyConversionResponse>
+    suspend fun getCurrencyConversionRate(conversionRate: ConversionRate) : Resource<CurrencyConversionResponse>
 
-    fun getCurrencyHistory(base : String, symbols : String)
+    suspend fun getCurrencyHistory(base : String, symbols : String)
 }

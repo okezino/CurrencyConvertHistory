@@ -6,28 +6,8 @@
     app:startDestination="@id/converterFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.currencyconverter.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
-
-        <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.currencyconverter.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
-
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/converterFragment"
-        android:name="com.example.currencyconverter.ConverterFragment"
+        android:name="com.example.currencyconverter.presentation.view.ConverterFragment"
         android:label="fragment_converter"
         tools:layout="@layout/fragment_converter" >
         <action
@@ -36,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
-        android:name="com.example.currencyconverter.HistoryFragment"
+        android:name="com.example.currencyconverter.presentation.view.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" />
 </navigation>

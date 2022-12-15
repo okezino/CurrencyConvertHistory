@@ -1,4 +1,7 @@
 package com.example.currencyconverter.domain.usecase
 
-class GetCurrencyHistoryUseCase {
+import com.example.currencyconverter.domain.repository.MainCurrencyRepository
+import javax.inject.Inject
+
+class GetCurrencyHistoryUseCase@Inject constructor(private val mainCurrencyRepository: MainCurrencyRepository) {
 }

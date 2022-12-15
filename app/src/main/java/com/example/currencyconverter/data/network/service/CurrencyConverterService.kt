@@ -1,5 +1,6 @@
 package com.example.currencyconverter.data.network.service
 
+import com.example.currencyconverter.common.NetworkUtil.API_KEY
 import com.example.currencyconverter.data.model.CurrencyConversionResponse
 import com.example.currencyconverter.data.model.SymbolResponse
 import retrofit2.http.GET
@@ -8,7 +9,9 @@ import retrofit2.http.Query
 interface CurrencyConverterService {
 
     @GET("symbols")
-    suspend fun getCurrencySymbols(): SymbolResponse
+    suspend fun getCurrencySymbols(
+        @Query("access_key") apikey : String = API_KEY
+    ): SymbolResponse
 
     @GET("convert")
     suspend fun getConvertedCurrency(

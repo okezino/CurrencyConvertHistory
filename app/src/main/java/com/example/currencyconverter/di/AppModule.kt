@@ -3,6 +3,8 @@ package com.example.currencyconverter.di
 import com.example.currencyconverter.common.NetworkUtil.API_KEY
 import com.example.currencyconverter.common.NetworkUtil.BASE_URL
 import com.example.currencyconverter.data.network.service.CurrencyConverterService
+import com.example.currencyconverter.data.repository.MainCurrencyRepositoryImp
+import com.example.currencyconverter.domain.repository.MainCurrencyRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,6 +33,7 @@ class AppModule {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client( OkHttpClient.Builder()
+                .addInterceptor(logging)
                 .addInterceptor(interceptor).build())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -42,9 +45,15 @@ class AppModule {
     fun provideHeaderInterceptor(): Interceptor {
         return Interceptor { chain ->
             val request = chain.request().newBuilder()
-            request.addHeader("apikey", API_KEY)
+            request.addHeader("access_key", API_KEY)
             chain.proceed(request.build())
         }
+    }
+
+    @Provides
+    @Singleton
+    fun provideMainCurrencyRepository(currencyConverterService: CurrencyConverterService) : MainCurrencyRepository{
+        return MainCurrencyRepositoryImp(currencyConverterService)
     }
 
 }

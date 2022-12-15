@@ -1,4 +1,4 @@
-# Cu*CurrrencyConvertHistory
+# CurrrencyConvertHistory
 
 This applications  is a currency converter application, we can check the value of two currency pair 
 
